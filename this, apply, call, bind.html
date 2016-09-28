@@ -8,101 +8,82 @@
 
 <script>
 
-// 1. Cоздать объект, кот. описывает ширину, высоту прямоугольника и может посчитать площадь фигуры
-
-    function getAquare() {
-        var width = parseFloat(this.width);
-        var height = parseFloat(this.height);
-
-        return width * height;
-    };
+    // 1. Cоздать объект, кот. описывает ширину, высоту прямоугольника и может посчитать площадь фигуры
 
     const rectangle = {
         width: "10.5sm",
         height: "25sm",
-        getAquare : getAquare,
+        getAquare: function () {
+            var width = parseFloat(this.width);
+            var height = parseFloat(this.height);
+            return width * height;
+        }
     };
+    console.log("Площадь фигуры равна: " + rectangle.getAquare());
 
-console.log("Площадь фигуры равна: " + rectangle.getAquare());
-
-//  2. Создать объект, и два метода, 1-й возвращает цену, а второй возвращает цену с учетом скидки
-
-    function getPrice() {
-        var price = parseFloat(this.price);
-        return price;
-    };
-
-    function getPriceWithDiscount() {
-        var discount = parseFloat(this.discount);
-        var price = parseFloat(this.price);
-        return (price -(price * discount)/100);
-    };
+    //  2. Создать объект, и два метода, 1-й возвращает цену, а второй возвращает цену с учетом скидки
 
     var obj = {
         price: 10,
         discount: "15%",
-        getPrice: getPrice,
-        getPriceWithDiscount: getPriceWithDiscount,
+        getPrice: function () {
+            return this.price;
+        },
+        getPriceWithDiscount: function () {
+            var discount = parseFloat(this.discount);
+            return (this.getPrice() - (this.getPrice() * discount) / 100);
+        },
     };
+    console.log(obj.getPrice());
+    console.log(obj.getPriceWithDiscount());
 
-    console.log( obj.getPrice());
-    console.log( obj.getPriceWithDiscount());
-
-//    3 Создать объект и метод, исправив код для вызова метода getName()
+    //    3 Создать объект и метод, исправив код для вызова метода getName()
 
     function getName() {
         return this.name;
     };
 
-    var user = {
-        name: 'Abraham',
-        getName: getName,
-    };
-    console.log("Имя юзера: " + user.getName());
-
-//     второй вариант
-
-    function getName() {
-        return this.name;
-    };
     var user2 = {name: 'Abraham'};
-    user2.getName = getName;
+    var  getUserName = function () {
+        return this.name;
+        };
+
+    user2.getName = getUserName;
     console.log("Имя юзера: " + user2.getName());
 
-//    4 Создать объект, у кот.будет поле высота и метод увеличить высоту на 1
+    //    4 Создать объект, у кот.будет поле высота и метод увеличить высоту на 1
 
-   var object = {
+    var object = {
         height: 10,
-        raiseHeight: function() {
-            this.height += 1;
-            return this.height;
+        raiseHeight: function () {
+            return this.height += 1;
         }
     };
 
-console.log(object.raiseHeight());
-console.log(" Новая высота равна:" + object.height);
+    console.log(object.raiseHeight());
+    console.log(" Новая высота равна:" + object.height);
 
-//    5. Создать объект, у котю есть методы удвоить, прибавить 1, отнять 1. И что б эти методы можно было вызвать через цепочку.
+    //    5. Создать объект, у котю есть методы удвоить, прибавить 1, отнять 1. И что б эти методы можно было вызвать через цепочку.
 
     var numerator = {
-        number : 1,
+        number: 1,
         double: function () {
-            this.number *=2;
+            this.number *= 2;
             return this;
         },
         plusOne: function () {
-            this.number +=1;
+            this.number += 1;
             return this;
         },
         minusOne: function () {
-            return this.number -=1;
-            return  this;
+            return this.number -= 1;
+            return this;
         }
     };
-console.log(numerator.double().plusOne().minusOne());
-console.log(numerator.number);
+    console.log(numerator.double().plusOne().minusOne());
+    console.log(numerator.number);
 
-//    6 Объяснить задачу
+    //    6 Объяснить задачу
 
     var person = {name: 'Abraham'};
     var otherPerson = {
@@ -114,15 +95,15 @@ console.log(numerator.number);
     person.getName;
     person.getName = otherPerson.getName;
 
-//Первый раз вызывая  person.getName, выдает undefined, потому что у person нет данного метода.
-// Потом мы person определили  метод getName взяв его из otherPerson. Поэтому теперь вызывая ниже данный метод в person, все хорошо отработает.
+    //Первый раз вызывая  person.getName, выдает undefined, потому что у person нет данного метода.
+    // Потом мы person определили  метод getName взяв его из otherPerson. Поэтому теперь вызывая ниже данный метод в person, все хорошо отработает.
     person.getName();
     otherPerson.getName();
 
-//  Задачи с apply, call, bind.
-//    1. Что выведет код и почему?
+    //  Задачи с apply, call, bind.
+    //    1. Что выведет код и почему?
 
-    function getList(){
+    function getList() {
         return this.list;
     }
     var users = {
@@ -130,16 +111,16 @@ console.log(numerator.number);
         list: ["Abraham", "James", "Steven"]
     }
 
-console.log(getList());
-users.getList = getList;
-console.log(users.getList());
-console.log(getList.call(users));
+    console.log(getList());
+    users.getList = getList;
+    console.log(users.getList());
+    console.log(getList.call(users));
 
-// При первом вызове getList(), this равен глобальному объекту Window, поэтому выдает -undefined
-// Тут (users.getList = getList;) я так понимаю, метод getList мы делаем доступным для обьекта users.
-// Тут getList.call(users) мы вызываем метод call передавая ему как контекст вызова объект users.
+    // При первом вызове getList(), this равен глобальному объекту Window, поэтому выдает -undefined
+    // Тут (users.getList = getList;) я так понимаю, метод getList мы делаем доступным для обьекта users.
+    // Тут getList.call(users) мы вызываем метод call передавая ему как контекст вызова объект users.
 
-//    2 Создать объект с розничной ценой и кол.продуктов и метод для получения общей стоимости всех товаров
+    //    2 Создать объект с розничной ценой и кол.продуктов и метод для получения общей стоимости всех товаров
 
     var products = {
         price: 250,
@@ -148,13 +129,14 @@ console.log(getList.call(users));
             return "Общая стоимости всех товаров равна " + this.price * this.count;
         },
     };
-console.log(products.countGeneralPrice());
+    console.log(products.countGeneralPrice());
 
-// или используя call, apply
+    // или используя call, apply
 
     function countGeneralPrice() {
         return "Общая стоимости всех товаров равна " + this.price * this.count;
-    };
+    }
+    ;
 
     var products = {
         price: 250,
@@ -163,7 +145,7 @@ console.log(products.countGeneralPrice());
     console.log(countGeneralPrice.call(products));
     console.log(countGeneralPrice.apply(products));
 
-//    3. Создать 2 объекта.Второй описывает кол.деталей и цену за одну деталь. Узнать общую стоимость всех деталей для 2 объекта.
+    //    3. Создать 2 объекта.Второй описывает кол.деталей и цену за одну деталь. Узнать общую стоимость всех деталей для 2 объекта.
 
     var products = {
         price: 250,
@@ -183,33 +165,34 @@ console.log(products.countGeneralPrice());
     var countGeneralPrice = products.countGeneralPrice.bind(details);
     console.log(countGeneralPrice());
 
-//    4. Даны обьект и функция. Не меняя функцию или объект получить результат ф-ции getSquare
+    //    4. Даны обьект и функция. Не меняя функцию или объект получить результат ф-ции getSquare
 
-    var size ={
+    var size = {
         width: 5,
         height: 10
     };
 
-    getSquare = function(){
+    getSquare = function () {
         return "Результат умножения: " + this.width * this.height
     };
     console.log(getSquare.call(size));
 
-//    5 Дан массив. Найти минимальный элемент используя ссылку на массив и Math.min
+    //    5 Дан массив. Найти минимальный элемент используя ссылку на массив и Math.min
 
     var numbers = [4, 12, 0, 10, -2, 4];
     console.log("Минимальное значение массива равно: " + Math.min.apply(null, numbers));
 
-//    6. Исправить метод, что бы можно было вычислить сумму трех слогаемых (высота плюс отступы).
-    
+    //    6. Исправить метод, что бы можно было вычислить сумму трех слогаемых (высота плюс отступы).
+
     var element = {
         height: "15px",
         marginTop: "5px",
         marginBottom: "5px",
         getFullHeight: function () {
-            var height =  parseFloat(this.height);
+            var height = parseFloat(this.height);
             var marginTop = parseFloat(this.marginTop);
-            var marginBottom = parseFloat( this.marginBottom);
+            var marginBottom = parseFloat(this.marginBottom);
+
             return height + marginTop + marginBottom;
         }
     };
@@ -220,16 +203,16 @@ console.log(products.countGeneralPrice());
     };
     console.log("Сумма трех слогаемых: " + element.getFullHeight.call(block));
 
-//    7. Изменить функцию getElementHeight таким образом, что бы можно было вызвать getElementHeight и получть 25.
+    //    7. Изменить функцию getElementHeight таким образом, что бы можно было вызвать getElementHeight и получть 25.
 
-    var element = {
+    var elemen = {
         height: 25,
-        getHeight: function(){
+        getHeight: function () {
             return this.height;
         },
     };
 
-    getElementHeight = element.getHeight.bind(element);
+    getElementHeight = elemen.getHeight.bind(elemen);
     console.log(getElementHeight());
 
 </script>
