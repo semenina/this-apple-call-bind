@@ -215,6 +215,33 @@
     getElementHeight = elemen.getHeight.bind(elemen);
     console.log(getElementHeight());
 
+//    Доп. задача
+
+    var obj = {
+        price: 100,
+        name: "coffe",
+        getPriceWithDiscount:getPriceWithDiscount
+    };
+
+    function getPriceWithDiscount(discount,exchange, currency){
+        var discount = parseFloat(discount);
+        var exchange = parseFloat(exchange);
+        var finalPrice;
+
+        if(currency == "USD"){
+            finalPrice = (this.price  - (this.price * discount) / 100)/ exchange;
+
+        }else if (currency == "uan"){
+            finalPrice = (this.price  - (this.price * discount) / 100);
+
+        }else if (currency == "ru"){
+            finalPrice = (this.price  - (this.price * discount) / 100) * exchange;
+
+        } return "Всего к оплате " + finalPrice + " " + currency;
+    }
+
+    console.log(getPriceWithDiscount.apply(obj, ["10%", 25, "USD"]));
+
 </script>
 
 </body>
